@@ -36,7 +36,7 @@ class CategoryTest extends TestCase
 
     public function test_it_can_be_order()
     {
-        $category = Category::factory()->create(['order' => 3]);
+        Category::factory()->create(['order' => 3]);
 
         $firstCategory = Category::factory()->create(['order' => 1]);
 
