@@ -37,7 +37,7 @@ class CategoryIndexTest extends TestCase
         $this->json('GET', '/api/categories')->assertJsonCount(1, 'data');
     }
 
-    public function test_it_returns_an_ordered_categorie()
+    public function test_it_returns_an_ordered_categories()
     {
         $secondCategory = Category::factory()->create([
             'order' => 2
