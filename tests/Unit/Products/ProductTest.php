@@ -2,8 +2,11 @@
 
 namespace Tests\Unit\Products;
 
+use App\Models\Category;
 use App\Models\Product;
+use App\Scoping\Scopes\CategoryScope;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
@@ -15,5 +18,17 @@ class ProductTest extends TestCase
         $product = new Product();
 
         $this->assertEquals($product->getRouteKeyName(), 'slug');
+    }
+
+    public function test_it_has_many_categories()
+    {
+        $product = Product::factory()->create();
+
+        $product->categories()->create(
+            Category::factory()->raw()
+        );
+
+        $this->assertInstanceOf(Collection::class, $product->categories);
+        $this->assertInstanceOf(Category::class, $product->categories->first());
     }
 }
