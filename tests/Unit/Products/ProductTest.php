@@ -4,6 +4,7 @@ namespace Tests\Unit\Products;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductVariation;
 use App\Scoping\Scopes\CategoryScope;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
@@ -30,5 +31,15 @@ class ProductTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $product->categories);
         $this->assertInstanceOf(Category::class, $product->categories->first());
+    }
+
+    public function test_it_has_many_variation()
+    {
+        $product = Product::factory()->create();
+
+        ProductVariation::factory()->create(['product_id' => $product->id]);
+
+        $this->assertInstanceOf(Collection::class, $product->categories);
+        $this->assertInstanceOf(ProductVariation::class, $product->variations->first());
     }
 }

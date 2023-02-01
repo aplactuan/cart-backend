@@ -16,6 +16,9 @@ class Scoper
     public function apply(Builder $query, array $scopes)
     {
         foreach ($scopes as $key => $scope) {
+            if (!$this->request->has($key)) {
+                continue;
+            }
             foreach ($scopes as $scope) {
                 if (!($scope instanceof Scope)) {
                     continue;
