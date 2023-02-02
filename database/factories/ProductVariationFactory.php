@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\ProductVariationType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +20,8 @@ class ProductVariationFactory extends Factory
     {
         return [
             'product_id' => Product::factory()->create(),
-            'name' => fake()->unique()->name
+            'name' => fake()->unique()->name,
+            'product_variation_type_id' => ProductVariationType::factory()->create()
         ];
     }
 }
