@@ -2,15 +2,14 @@
 
 namespace App\Models;
 
-use App\Scoping\Scoper;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Traits\CanBeScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, CanBeScope;
 
     protected $guarded = [];
 
@@ -27,10 +26,5 @@ class Product extends Model
     public function variations()
     {
         return $this->hasMany(ProductVariation::class)->orderBy('order', 'asc');
-    }
-
-    public function scopeWithScopes(Builder $query, array $scopes)
-    {
-        return (new Scoper(request()))->apply($query, $scopes);
     }
 }
