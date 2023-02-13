@@ -7,7 +7,9 @@ use App\Http\Resources\ProductVariationResource;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationType;
+use App\Models\Stock;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ProductVariationTest extends TestCase
@@ -74,5 +76,17 @@ class ProductVariationTest extends TestCase
 
         $this->assertTrue($variation->priceVaries());
         $this->assertFalse($variationNoPrice->priceVaries());
+    }
+
+    public function test_it_has_many_stocks()
+    {
+        $variation = ProductVariation::factory()->create();
+
+        $variation->stocks()->create(
+            Stock::factory()->raw()
+        );
+
+        $this->assertInstanceOf(Collection::class, $variation->stocks);
+        $this->assertInstanceOf(Stock::class, $variation->stocks->first());
     }
 }
