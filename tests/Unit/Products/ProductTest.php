@@ -6,7 +6,9 @@ use App\Cart\Money;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductVariation;
+use App\Models\Stock;
 use App\Scoping\Scopes\CategoryScope;
+use Database\Factories\StockFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
@@ -58,5 +60,45 @@ class ProductTest extends TestCase
         ]);
 
         $this->assertEquals('$10.00', $product->formatted_price);
+    }
+
+    public function test_it_can_check_in_stock()
+    {
+        $productNoStock = Product::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $variation = ProductVariation::factory()->create([
+            'product_id' => $product->id
+        ]);
+
+        $variation->stocks()->create(
+            Stock::factory()->raw()
+        );
+
+        $this->assertFalse($productNoStock->inStock());
+        $this->assertTrue($product->inStock());
+    }
+
+    public function test_it_can_track_the_stock_count()
+    {
+        $productNoStock = Product::factory()->create();
+
+        $product = Product::factory()->create();
+
+        $variation = ProductVariation::factory()->create([
+            'product_id' => $product->id
+        ]);
+
+        $variation->stocks()->create(
+            Stock::factory()->raw(['quantity' => 5])
+        );
+
+        $variation->stocks()->create(
+            Stock::factory()->raw(['quantity' => 10])
+        );
+
+        $this->assertEquals(0, $productNoStock->stockCount());
+        $this->assertEquals(15, $product->stockCount());
     }
 }
