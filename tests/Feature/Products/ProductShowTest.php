@@ -3,14 +3,11 @@
 namespace Tests\Feature\Products;
 
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProductShowTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_it_will_return_404_when_slug_does_not_exist()
     {
         $this->json('GET', '/api/products/not-a-product')

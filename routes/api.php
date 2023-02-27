@@ -10,7 +10,7 @@ Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
 
 Route::name('auth.')->group(function() {
-    Route::post('/register', [RegisterController::class, 'action']);
+    Route::post('/register', [RegisterController::class, 'action'])->name('register');
 });
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

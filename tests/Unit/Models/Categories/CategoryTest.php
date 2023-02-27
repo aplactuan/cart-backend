@@ -1,17 +1,14 @@
 <?php
 
-namespace Tests\Unit\Categories;
+namespace Tests\Unit\Models\Categories;
 
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class CategoryTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_it_has_children()
     {
         $category = Category::factory()->create();

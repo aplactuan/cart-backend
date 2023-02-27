@@ -1,21 +1,17 @@
 <?php
 
-namespace Tests\Unit\Products;
+namespace Tests\Unit\Models\Products;
 
 use App\Cart\Money;
-use App\Http\Resources\ProductVariationResource;
 use App\Models\Product;
 use App\Models\ProductVariation;
 use App\Models\ProductVariationType;
 use App\Models\Stock;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ProductVariationTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_it_has_one_variation_type()
     {
         $variation = ProductVariation::factory()->create();

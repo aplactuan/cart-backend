@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit\Products;
+namespace Tests\Unit\Models\Products;
 
 use App\Cart\Money;
 use App\Models\Category;
@@ -9,14 +9,11 @@ use App\Models\ProductVariation;
 use App\Models\Stock;
 use App\Scoping\Scopes\CategoryScope;
 use Database\Factories\StockFactory;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
 class ProductTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_it_uses_the_slug_for_route_key_name()
     {
         $product = new Product();

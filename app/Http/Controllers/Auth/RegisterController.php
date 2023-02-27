@@ -13,7 +13,7 @@ class RegisterController extends Controller
 {
     public function action(RegisterRequest $request): PrivateUserResource
     {
-        $validated = $request->safe()->only('name', 'email', 'password');
+        $validated = $request->validated();
         $user = User::create($validated);
 
         return new PrivateUserResource($user);

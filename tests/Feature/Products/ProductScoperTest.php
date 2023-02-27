@@ -4,14 +4,11 @@ namespace Tests\Feature\Products;
 
 use App\Models\Category;
 use App\Models\Product;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ProductScoperTest extends TestCase
 {
-    use RefreshDatabase;
-
     public function test_it_can_scope_categories()
     {
         $product = Product::factory()->create();
