@@ -11,7 +11,7 @@ use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
-    public function action(RegisterRequest $request): PrivateUserResource
+    public function __invoke(RegisterRequest $request): PrivateUserResource
     {
         $validated = $request->validated();
         $user = User::create($validated);

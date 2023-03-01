@@ -10,7 +10,7 @@ class UserRegisterTest extends TestCase
 {
     public function test_it_requires_a_name()
     {
-        $this->json('POST', '/api/register', User::factory()->raw([
+        $this->json('POST', '/api/auth/register', User::factory()->raw([
             'name' => ''
         ]))
             ->assertJsonValidationErrors('name');
@@ -18,7 +18,7 @@ class UserRegisterTest extends TestCase
 
     public function test_it_requires_a_password()
     {
-        $this->json('POST', '/api/register', User::factory()->raw([
+        $this->json('POST', '/api/auth/register', User::factory()->raw([
             'password' => ''
         ]))
             ->assertJsonValidationErrors('password');
@@ -26,7 +26,7 @@ class UserRegisterTest extends TestCase
 
     public function test_it_requires_an_email()
     {
-        $this->json('POST', '/api/register', User::factory()->raw([
+        $this->json('POST', '/api/auth/register', User::factory()->raw([
             'email' => ''
         ]))
             ->assertJsonValidationErrors('email');
@@ -34,7 +34,7 @@ class UserRegisterTest extends TestCase
 
     public function test_it_requires_a_valid_email()
     {
-        $this->json('POST', '/api/register', User::factory()->raw([
+        $this->json('POST', '/api/auth/register', User::factory()->raw([
             'email' => 'not_an_email'
         ]))
             ->assertJsonValidationErrors('email');
@@ -46,7 +46,7 @@ class UserRegisterTest extends TestCase
             'email' => 'me@email.com'
         ]);
 
-        $this->json('POST', '/api/register', User::factory()->raw([
+        $this->json('POST', '/api/auth/register', User::factory()->raw([
             'email' => $user->email
         ]))
             ->assertJsonValidationErrors('email');
@@ -54,7 +54,7 @@ class UserRegisterTest extends TestCase
 
     public function test_it_registers_a_user()
     {
-        $this->json('POST', '/api/register', $user = User::factory()->raw([
+        $this->json('POST', '/api/auth/register', $user = User::factory()->raw([
             'password' => 'cats'
         ]));
 
@@ -66,7 +66,7 @@ class UserRegisterTest extends TestCase
 
     public function test_it_returns_a_json_data()
     {
-        $this->json('POST', '/api/register', $user = User::factory()->raw())
+        $this->json('POST', '/api/auth/register', $user = User::factory()->raw())
             ->assertJsonFragment([
                 'name' => $user['name'],
                 'email' => $user['email']
