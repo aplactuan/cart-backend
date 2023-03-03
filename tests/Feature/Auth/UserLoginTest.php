@@ -6,9 +6,12 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
+use Tests\Traits\CanRegenerateAccessToken;
 
 class UserLoginTest extends TestCase
 {
+    use CanRegenerateAccessToken;
+
     public function test_it_requires_an_email_when_logging_in()
     {
         $this->json('POST', '/api/auth/login')
@@ -35,9 +38,12 @@ class UserLoginTest extends TestCase
 
     public function test_it_returns_a_token_when_credential_is_correct()
     {
+        $this->createPersonalClient();
+
         $user = User::factory()->create([
             'password' => 'secret'
         ]);
+
 
         $this->json('POST', '/api/auth/login', [
             'email' => $user->email,
@@ -46,6 +52,22 @@ class UserLoginTest extends TestCase
             'meta' => [
                 'token'
             ]
+        ]);
+    }
+
+    public function test_it_returns_the_user_data_after_successfully_login()
+    {
+        $this->createPersonalClient();
+
+        $user = User::factory()->create([
+            'password' => 'secret'
+        ]);
+
+        $this->json('POST', '/api/auth/login', [
+            'email' => $user->email,
+            'password' => 'secret'
+        ])->assertJsonFragment([
+            'name' => $user->name
         ]);
     }
 }
