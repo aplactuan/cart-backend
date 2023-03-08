@@ -51,4 +51,10 @@ class User extends Authenticatable
             $user->password = Hash::make($user->password);
         });
     }
+
+    public function cart()
+    {
+        return $this->belongsToMany(ProductVariation::class, 'cart_user')
+            ->withPivot(['quantity']);
+    }
 }
