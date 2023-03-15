@@ -15,13 +15,16 @@ class Cart
 
     public function add($products)
     {
-        $products = collect($products)->keyBy('id')
+        $this->user->cart()->syncWithoutDetaching($this->getProducts($products));
+    }
+
+    public function getProducts($products): array
+    {
+        return collect($products)->keyBy('id')
             ->map(function ($product) {
                 return [
-                    'quantity'=> $product['quantity']
+                    'quantity' => $product['quantity']
                 ];
             })->toArray();
-
-        $this->user->cart()->syncWithoutDetaching($products);
     }
 }

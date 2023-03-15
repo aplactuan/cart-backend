@@ -4,9 +4,9 @@ namespace App\Providers;
 
 use App\Cart\Cart;
 use App\Models\User;
-use Illuminate\Foundation\Application;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Auth\TokenGuard;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Guard;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -17,9 +17,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Cart::class, function (Application $app) {
-            dd(Auth::user());
-            return new Cart(User::first());
+        $this->app->singleton(Cart::class, function ($app) {
+            $user = $app->auth->user();
+            return new Cart($user);
         });
     }
 

@@ -9,16 +9,8 @@ use Illuminate\Http\Request;
 
 class StoreItemsController extends Controller
 {
-    protected Cart $cart;
-
-    public function __construct(Cart $cart)
+    public function __invoke(StoreItemRequest $request, Cart $cart)
     {
-        $this->cart = $cart;
-    }
-
-    public function __invoke(StoreItemRequest $request)
-    {
-        dd($request->user());
-        $this->cart->add($request->products);
+        $cart->add($request->products);
     }
 }
