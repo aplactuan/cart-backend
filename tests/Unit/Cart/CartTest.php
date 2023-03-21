@@ -29,4 +29,27 @@ class CartTest extends TestCase
         $this->assertCount(1, $user->cart);
         $this->assertEquals($productVariation->id, $user->cart->first()->pivot->product_variation_id);
     }
+
+    public function test_it_adds_the_quantity_of_previous_products()
+    {
+        $productVariation = ProductVariation::factory()->create();
+
+        $cart = new Cart(
+            $user = User::factory()->create()
+        );
+
+        $cart->add([
+            ['id' => $productVariation->id, 'quantity' => 2]
+        ]);
+
+        $cart = new Cart(
+            $user->refresh()
+        );
+
+        $cart->add([
+            ['id' => $productVariation->id, 'quantity' => 2]
+        ]);
+
+        $this->assertEquals(4, $user->fresh()->cart->first()->pivot->quantity);
+    }
 }
