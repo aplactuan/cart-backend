@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Cart\StoreItemsController;
+use App\Http\Controllers\Cart\UpdateItemController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Products\ProductController;
 use Illuminate\Http\Request;
@@ -19,6 +20,7 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::post('/cart', StoreItemsController::class)->middleware(['auth:api']);
+Route::patch('/cart/{productVariation}', UpdateItemController::class)->middleware(['auth:api']);
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
