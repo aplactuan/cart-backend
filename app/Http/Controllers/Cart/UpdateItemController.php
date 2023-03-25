@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Cart;
 
 use App\Cart\Cart;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Cart\UpdateCartRequest;
 use App\Models\ProductVariation;
 use Illuminate\Http\Request;
 
@@ -15,8 +16,8 @@ class UpdateItemController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function __invoke(ProductVariation $productVariation, Request $request, Cart $cart)
+    public function __invoke(ProductVariation $productVariation, UpdateCartRequest $request, Cart $cart)
     {
-        dd($productVariation);
+        $cart->update($productVariation, $request->quantity);
     }
 }

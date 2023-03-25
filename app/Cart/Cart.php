@@ -38,4 +38,11 @@ class Cart
         }
         return 0;
     }
+
+    public function update($productVariation, $quantity)
+    {
+        $this->user->cart()->updateExistingPivot($productVariation->id, [
+            'quantity' => $quantity
+        ]);
+    }
 }
