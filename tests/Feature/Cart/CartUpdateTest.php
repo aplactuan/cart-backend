@@ -18,6 +18,14 @@ class CartUpdateTest extends TestCase
             ->assertStatus(Response::HTTP_UNAUTHORIZED);
     }
 
+    public function test_it_returns_404_when_product_variation_is_not_available()
+    {
+        Passport::actingAs(User::factory()->create());
+
+        $this->json('PATCH', '/api/cart/1')
+        ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
     public function test_it_requires_quantity()
     {
         Passport::actingAs(User::factory()->create());

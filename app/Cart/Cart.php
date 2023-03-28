@@ -45,4 +45,9 @@ class Cart
             'quantity' => $quantity
         ]);
     }
+
+    public function delete($productVariation)
+    {
+        $this->user->cart()->detach($productVariation->id);
+    }
 }

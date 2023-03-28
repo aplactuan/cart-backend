@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Cart\DeleteItemController;
 use App\Http\Controllers\Cart\StoreItemsController;
 use App\Http\Controllers\Cart\UpdateItemController;
 use App\Http\Controllers\Categories\CategoryController;
@@ -21,7 +22,7 @@ Route::prefix('auth')->group(function() {
 
 Route::post('/cart', StoreItemsController::class)->middleware(['auth:api']);
 Route::patch('/cart/{productVariation}', UpdateItemController::class)->middleware(['auth:api']);
-
+Route::delete('/cart/{productVariation}', DeleteItemController::class)->middleware(['auth:api']);
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
