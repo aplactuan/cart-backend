@@ -50,4 +50,9 @@ class Cart
     {
         $this->user->cart()->detach($productVariation->id);
     }
+
+    public function empty()
+    {
+        $this->user->cart()->detach();
+    }
 }
