@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Cart\DeleteItemController;
 use App\Http\Controllers\Cart\StoreItemsController;
 use App\Http\Controllers\Cart\UpdateItemController;
+use App\Http\Controllers\Cart\UserItemsController;
 use App\Http\Controllers\Categories\CategoryController;
 use App\Http\Controllers\Products\ProductController;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ Route::prefix('auth')->group(function() {
     Route::get('/me', MeController::class)->middleware(['auth:api']);
 });
 
+Route::get('/cart', UserItemsController::class)->middleware(['auth:api']);
 Route::post('/cart', StoreItemsController::class)->middleware(['auth:api']);
 Route::patch('/cart/{productVariation}', UpdateItemController::class)->middleware(['auth:api']);
 Route::delete('/cart/{productVariation}', DeleteItemController::class)->middleware(['auth:api']);
