@@ -16,6 +16,8 @@ class UserItemsController extends Controller
      */
     public function __invoke(Request $request): CartResource
     {
+        $request->user()->load(['cart.product', 'cart.product.variations.stock', 'cart.stock']);
+
         return new CartResource($request->user());
     }
 }
