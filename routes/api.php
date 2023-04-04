@@ -21,10 +21,13 @@ Route::prefix('auth')->group(function() {
     Route::get('/me', MeController::class)->middleware(['auth:api']);
 });
 
-Route::get('/cart', UserItemsController::class)->middleware(['auth:api']);
-Route::post('/cart', StoreItemsController::class)->middleware(['auth:api']);
-Route::patch('/cart/{productVariation}', UpdateItemController::class)->middleware(['auth:api']);
-Route::delete('/cart/{productVariation}', DeleteItemController::class)->middleware(['auth:api']);
+Route::middleware(['auth:api'])->prefix('cart')->group(function () {
+    Route::get('/', UserItemsController::class);
+    Route::post('/', StoreItemsController::class);
+    Route::patch('//{productVariation}', UpdateItemController::class);
+    Route::delete('//{productVariation}', DeleteItemController::class);
+});
+
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
 //});
