@@ -33,4 +33,14 @@ class CartIndexTest extends TestCase
                 'id' => $productVariation->id
             ]);
     }
+
+    public function test_it_shows_if_the_product_is_empty()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $this->json('GET', '/api/cart')
+            ->assertJsonFragment([
+                'empty' => true
+            ]);
+    }
 }
