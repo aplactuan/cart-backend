@@ -39,6 +39,20 @@ class Cart
         return 0;
     }
 
+    public function subtotal()
+    {
+        $subtotal = $this->user->cart->sum(function ($product) {
+           return  $product->price->amount() * $product->pivot->quantity;
+        });
+
+        return new Money($subtotal);
+    }
+
+    public function total()
+    {
+        return $this->subtotal();
+    }
+
     public function update($productVariation, $quantity)
     {
         $this->user->cart()->updateExistingPivot($productVariation->id, [

@@ -43,4 +43,40 @@ class CartIndexTest extends TestCase
                 'empty' => true
             ]);
     }
+
+    public function test_it_shows_a_formatted_subtotal()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $user->cart()->attach(
+            ProductVariation::factory()->create([
+                'price' => 500
+            ]), [
+                'quantity' => 2
+            ]
+        );
+
+        $this->json('GET', '/api/cart')
+            ->assertJsonFragment([
+                'subtotal' => '$10.00'
+            ]);
+    }
+
+    public function test_it_shows_a_formatted_total()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $user->cart()->attach(
+            ProductVariation::factory()->create([
+                'price' => 500
+            ]), [
+                'quantity' => 2
+            ]
+        );
+
+        $this->json('GET', '/api/cart')
+            ->assertJsonFragment([
+                'total' => '$10.00'
+            ]);
+    }
 }

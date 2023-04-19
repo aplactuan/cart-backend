@@ -22,7 +22,9 @@ class UserItemsController extends Controller
         return (new CartResource(
             $request->user()
         ))->additional([
-            'meta' => $this->meta($cart)
+            'meta' => $this->meta($cart),
+            'subtotal' => $cart->subtotal()->formatted(),
+            'total' => $cart->total()
         ]);
     }
 
