@@ -17,6 +17,8 @@ class UserItemsController extends Controller
      */
     public function __invoke(Request $request, Cart $cart): CartResource
     {
+        $cart->sync();
+
         $request->user()->load(['cart.product', 'cart.product.variations.stock', 'cart.stock']);
 
         return (new CartResource(
@@ -24,7 +26,8 @@ class UserItemsController extends Controller
         ))->additional([
             'meta' => $this->meta($cart),
             'subtotal' => $cart->subtotal()->formatted(),
-            'total' => $cart->total()
+            'total' => $cart->total(),
+            'changed' => $cart->hasChanged()
         ]);
     }
 

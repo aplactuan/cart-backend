@@ -48,10 +48,16 @@ class CartIndexTest extends TestCase
     {
         $user = Passport::actingAs(User::factory()->create());
 
+        $variation = ProductVariation::factory()->create([
+            'price' => 500
+        ]);
+
+        $variation->stocks()->create([
+            'quantity' => 100
+        ]);
+
         $user->cart()->attach(
-            ProductVariation::factory()->create([
-                'price' => 500
-            ]), [
+            $variation, [
                 'quantity' => 2
             ]
         );
@@ -66,6 +72,30 @@ class CartIndexTest extends TestCase
     {
         $user = Passport::actingAs(User::factory()->create());
 
+        $variation = ProductVariation::factory()->create([
+            'price' => 500
+        ]);
+
+        $variation->stocks()->create([
+            'quantity' => 100
+        ]);
+
+        $user->cart()->attach(
+            $variation, [
+                'quantity' => 2
+            ]
+        );
+
+        $this->json('GET', '/api/cart')
+            ->assertJsonFragment([
+                'total' => '$10.00'
+            ]);
+    }
+
+    public function test_it_detects_if_cart_quantity_is_change()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
         $user->cart()->attach(
             ProductVariation::factory()->create([
                 'price' => 500
@@ -76,7 +106,7 @@ class CartIndexTest extends TestCase
 
         $this->json('GET', '/api/cart')
             ->assertJsonFragment([
-                'total' => '$10.00'
+                'changed' => true
             ]);
     }
 }

@@ -24,8 +24,8 @@ Route::prefix('auth')->group(function() {
 Route::middleware(['auth:api'])->prefix('cart')->group(function () {
     Route::get('/', UserItemsController::class);
     Route::post('/', StoreItemsController::class);
-    Route::patch('//{productVariation}', UpdateItemController::class);
-    Route::delete('//{productVariation}', DeleteItemController::class);
+    Route::patch('/{productVariation}', UpdateItemController::class);
+    Route::delete('/{productVariation}', DeleteItemController::class);
 });
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {

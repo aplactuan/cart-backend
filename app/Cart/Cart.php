@@ -8,6 +8,8 @@ class Cart
 {
     protected User $user;
 
+    protected bool $changed = false;
+
     public function __construct(User $user)
     {
         $this->user = $user;
@@ -46,6 +48,26 @@ class Cart
         });
 
         return new Money($subtotal);
+    }
+
+    public function sync()
+    {
+        $this->user->cart()->each(function($product) {
+            $quantity = $product->minStock($product->pivot->quantity);
+
+            if ($quantity != $product->pivot->quantity) {
+                $this->changed = true;
+            }
+
+            $product->pivot->update([
+                'quantity' => $quantity
+            ]);
+        });
+    }
+
+    public function hasChanged(): bool
+    {
+        return $this->changed;
     }
 
     public function total()
