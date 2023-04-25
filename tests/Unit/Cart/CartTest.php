@@ -194,4 +194,15 @@ class CartTest extends TestCase
 
         $this->assertTrue($cart->hasChanged());
     }
+
+    public function test_it_can_detect_the_minimum_quantity()
+    {
+        $variation = ProductVariation::factory()->create();
+
+        $variation->stocks()->create([
+            'quantity' => $quantity = 5
+        ]);
+
+        $this->assertEquals($variation->minStock(200), $quantity);
+    }
 }
