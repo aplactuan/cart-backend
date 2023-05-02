@@ -58,4 +58,9 @@ class User extends Authenticatable
             ->withPivot(['quantity'])
             ->withTimestamps();
     }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
 }
