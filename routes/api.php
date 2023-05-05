@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Addresses\AddressIndexController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MeController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -26,6 +27,10 @@ Route::middleware(['auth:api'])->prefix('cart')->group(function () {
     Route::post('/', StoreItemsController::class);
     Route::patch('/{productVariation}', UpdateItemController::class);
     Route::delete('/{productVariation}', DeleteItemController::class);
+});
+
+Route::middleware(['auth:api'])->prefix('addresses')->group(function () {
+    Route::get('/', AddressIndexController::class);
 });
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
