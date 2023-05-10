@@ -14,8 +14,28 @@ class Address extends Model
         'address_1',
         'city',
         'postal_code',
-        'country_id'
+        'country_id',
+        'default',
+        'user_id'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($address) {
+            if ($address->default) {
+                $address->user->addresses()->update([
+                    'default' => false
+                ]);
+            }
+        });
+    }
+
+    public function setDefaultAttribute($value)
+    {
+        $this->attributes['default'] = ($value === 'true' || $value ? true : false);
+    }
 
     public function user()
     {
