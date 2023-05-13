@@ -10,6 +10,7 @@ use App\Http\Controllers\Cart\StoreItemsController;
 use App\Http\Controllers\Cart\UpdateItemController;
 use App\Http\Controllers\Cart\UserItemsController;
 use App\Http\Controllers\Categories\CategoryController;
+use App\Http\Controllers\Countries\CountryIndexController;
 use App\Http\Controllers\Products\ProductController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -34,6 +35,8 @@ Route::middleware(['auth:api'])->prefix('addresses')->group(function () {
     Route::get('/', AddressIndexController::class);
     Route::post('/', AddressStoreController::class);
 });
+
+Route::get('countries', CountryIndexController::class);
 
 //Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //    return $request->user();
