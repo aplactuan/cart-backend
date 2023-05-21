@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Addresses\AddressIndexController;
+use App\Http\Controllers\Addresses\AddressShippingMethodController;
 use App\Http\Controllers\Addresses\AddressStoreController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\MeController;
@@ -34,6 +35,7 @@ Route::middleware(['auth:api'])->prefix('cart')->group(function () {
 Route::middleware(['auth:api'])->prefix('addresses')->group(function () {
     Route::get('/', AddressIndexController::class);
     Route::post('/', AddressStoreController::class);
+    Route::get('/{address}/shipping-method', AddressShippingMethodController::class);
 });
 
 Route::get('countries', CountryIndexController::class);
