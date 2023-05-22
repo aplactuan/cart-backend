@@ -65,6 +65,7 @@ class AddressShippingMethodTest extends TestCase
         //get url and check if the shipping method is available
         $this->json('GET', '/api/addresses/' . $address->id . '/shipping-method')
             ->assertJsonFragment([
+                'id' => $shippingMethod->id,
                 'name' => $shippingMethod->name,
                 'price' => $shippingMethod->formattedPrice
             ]);
