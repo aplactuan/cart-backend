@@ -8,6 +8,7 @@ use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Response;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -15,9 +16,38 @@ class AddressShippingMethodTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_it_requires_authentication()
+    {
+        $this->json('GET', '/api/addresses/1/shipping-method')
+            ->assertStatus(Response::HTTP_UNAUTHORIZED);
+    }
+
+    public function test_it_returns_404_when_address_is_not_found()
+    {
+        Passport::actingAs(User::factory()->create());
+
+        $this->json('GET', '/api/addresses/1/shipping-method')
+            ->assertStatus(Response::HTTP_NOT_FOUND);
+    }
+
+    public function test_it_requires_user_must_own_the_address()
+    {
+        Passport::actingAs(User::factory()->create());
+
+        $address = Address::factory()->create([
+            'user_id' => User::factory()->create()
+        ]);
+
+        $address->country->shippingMethods()->attach(
+            ShippingMethod::factory()->create()
+        );
+
+        $this->json('GET', '/api/addresses/' . $address->id . '/shipping-method')
+            ->assertStatus(Response::HTTP_FORBIDDEN);
+    }
+
     public function test_it_returns_a_shipping_method_for_a_given_address()
     {
-        $this->withoutExceptionHandling();
         $user = Passport::actingAs(User::factory()->create());
 
         //create an address

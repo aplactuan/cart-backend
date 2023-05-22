@@ -11,6 +11,8 @@ class AddressShippingMethodController extends Controller
 {
     public function __invoke(Address $address, Request $request)
     {
+        $this->authorize('view', $address);
+
         return ShippingMethodResource::collection($address->country->shippingMethods);
     }
 }
