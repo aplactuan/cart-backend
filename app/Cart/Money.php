@@ -7,6 +7,7 @@ use Money\Currency;
 use Money\Formatter\IntlMoneyFormatter;
 use Money\Money as BaseMoney;
 use NumberFormatter;
+use function MongoDB\BSON\toJSON;
 
 class Money
 {
@@ -30,5 +31,17 @@ class Money
         );
 
         return $formatter->format($this->money);
+    }
+
+    public function add(Money $money)
+    {
+        $this->money = $this->money->add($money->instance());
+
+        return $this;
+    }
+
+    public function instance()
+    {
+        return $this->money;
     }
 }
