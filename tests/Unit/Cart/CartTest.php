@@ -5,7 +5,9 @@ namespace Tests\Unit\Cart;
 use App\Cart\Cart;
 use App\Cart\Money;
 use App\Models\ProductVariation;
+use App\Models\ShippingMethod;
 use App\Models\User;
+use Database\Factories\ShippingMethodFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -204,5 +206,45 @@ class CartTest extends TestCase
         ]);
 
         $this->assertEquals($variation->minStock(200), $quantity);
+    }
+
+    public function test_it_can_compute_correct_total_without_shipping()
+    {
+        $cart = new Cart(
+            $user = User::factory()->create()
+        );
+
+        $user->cart()->attach(
+            ProductVariation::factory()->create([
+                'price' => 1000
+            ]), [
+                'quantity' => 2
+            ]
+        );
+
+        $this->assertEquals(2000, $cart->total()->amount());
+    }
+
+    public function test_it_can_compute_correct_total_with_shipping()
+    {
+        $cart = new Cart(
+            $user = User::factory()->create()
+        );
+
+        $shipping = ShippingMethod::factory()->create([
+            'price' => 200
+        ]);
+
+        $user->cart()->attach(
+            ProductVariation::factory()->create([
+                'price' => 1000
+            ]), [
+                'quantity' => 2
+            ]
+        );
+
+        $cart->withShipping($shipping->id);
+
+        $this->assertEquals(2200, $cart->total()->amount());
     }
 }
