@@ -3,6 +3,7 @@
 namespace Tests\Feature\Cart;
 
 use App\Models\ProductVariation;
+use App\Models\ShippingMethod;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -12,6 +13,8 @@ use Tests\TestCase;
 
 class CartIndexTest extends TestCase
 {
+    use RefreshDatabase;
+    
     public function test_it_requires_authentication()
     {
         $this->json('GET', '/api/cart')
@@ -89,6 +92,34 @@ class CartIndexTest extends TestCase
         $this->json('GET', '/api/cart')
             ->assertJsonFragment([
                 'total' => '$10.00'
+            ]);
+    }
+
+    public function test_it_shows_a_formatted_total_with_shipping()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $variation = ProductVariation::factory()->create([
+            'price' => 500
+        ]);
+
+        $variation->stocks()->create([
+            'quantity' => 100
+        ]);
+
+        $user->cart()->attach(
+            $variation, [
+                'quantity' => 2
+            ]
+        );
+
+        $shipping = ShippingMethod::factory()->create([
+            'price' => 100
+        ]);
+
+        $this->json('GET', '/api/cart?shipping_id=' . $shipping->id)
+            ->assertJsonFragment([
+                'total' => '$11.00'
             ]);
     }
 

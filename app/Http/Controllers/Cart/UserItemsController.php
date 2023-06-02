@@ -28,7 +28,7 @@ class UserItemsController extends Controller
         ))->additional([
             'meta' => $this->meta($cart),
             'subtotal' => $cart->subtotal()->formatted(),
-            'total' => $cart->withShipping($request->shipping_id)->total(),
+            'total' => $cart->withShipping($request->shipping_id)->total()->formatted(),
             'changed' => $cart->hasChanged()
         ]);
     }
