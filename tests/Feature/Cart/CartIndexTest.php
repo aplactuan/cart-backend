@@ -14,7 +14,7 @@ use Tests\TestCase;
 class CartIndexTest extends TestCase
 {
     use RefreshDatabase;
-    
+
     public function test_it_requires_authentication()
     {
         $this->json('GET', '/api/cart')
