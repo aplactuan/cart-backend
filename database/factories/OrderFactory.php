@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Address;
+use App\Models\ShippingMethod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +19,7 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'shipping_method_id' => ShippingMethod::factory()->create()->id
         ];
     }
 }
