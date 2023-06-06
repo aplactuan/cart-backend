@@ -9,6 +9,26 @@ class Order extends Model
 {
     use HasFactory;
 
+    const PENDING = 'pending';
+    const PROCESSING = 'processing';
+    const PAYMENT_FAILED = 'failed';
+    const COMPLETED = 'completed';
+
+    protected $fillable = [
+        'address_id',
+        'shipping_method_id',
+        'status'
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::creating(function ($order) {
+            $order->status = self::PENDING;
+        });
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

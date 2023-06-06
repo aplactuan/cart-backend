@@ -13,6 +13,19 @@ class OrderTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_it_sets_the_order_to_default_when_creating()
+    {
+        $user = User::factory()->create();
+        $address = $user->addresses()->create(Address::factory()->raw());
+
+        $order = Order::factory()->create([
+            'user_id' => $user->id,
+            'address_id' => $address->id
+        ]);
+
+        $this->assertEquals('pending', $order->status);
+    }
+
     public function test_it_belongs_to_a_user()
     {
         $user = User::factory()->create();
