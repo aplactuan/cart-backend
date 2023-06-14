@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Models\Address;
 use Illuminate\Contracts\Validation\Rule;
 
 class ValidShippingMethod implements Rule
@@ -11,7 +12,7 @@ class ValidShippingMethod implements Rule
      *
      * @return void
      */
-    public function __construct(protected $address)
+    public function __construct(protected $addressId)
     {
         //
     }
@@ -25,11 +26,11 @@ class ValidShippingMethod implements Rule
      */
     public function passes($attribute, $value)
     {
-        if (!$this->address) {
-            return false;
+        if ($address = $this->getAddress()) {
+            return $address->country->shippingMethods->contains('id', $value);
         }
 
-        return $this->address->country->shippingMethods->contains('id', $value);
+        return false;
     }
 
     /**
@@ -40,5 +41,10 @@ class ValidShippingMethod implements Rule
     public function message()
     {
         return 'Invalid shipping method';
+    }
+
+    protected function getAddress()
+    {
+        return Address::find($this->addressId);
     }
 }

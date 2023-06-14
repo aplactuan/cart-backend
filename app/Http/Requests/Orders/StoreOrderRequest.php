@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Orders;
 
-use App\Models\Address;
 use App\Rules\ValidShippingMethod;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,8 +25,6 @@ class StoreOrderRequest extends FormRequest
      */
     public function rules()
     {
-        $address = Address::find($this->address_id);
-
         return [
             'address_id' => [
                 'required',
@@ -38,7 +35,7 @@ class StoreOrderRequest extends FormRequest
             'shipping_method_id' => [
                 'required',
                 'exists:shipping_methods,id',
-                new ValidShippingMethod($address)
+                new ValidShippingMethod($this->address_id)
             ]
         ];
     }
