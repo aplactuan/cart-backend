@@ -16,6 +16,6 @@ class StoreOrderController extends Controller
      */
     public function __invoke(StoreOrderRequest $request)
     {
-        dd("It should pass validation");
+        $request->user()->orders()->create($request->validated());
     }
 }
