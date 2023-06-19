@@ -85,4 +85,35 @@ class StoreOrderTest extends TestCase
         ])
             ->assertJsonValidationErrors('shipping_method_id');
     }
+
+    public function test_it_creates_an_order()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        list($address, $shipping) = $this->orderDependency($user);
+
+        $this->json('POST', '/api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id,
+        ])->assertStatus(Response::HTTP_OK);
+
+        $this->assertDatabaseHas('orders', [
+            'user_id' => $user->id,
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id
+        ]);
+    }
+
+    protected function orderDependency(User $user)
+    {
+        $address = Address::factory()->create([
+            'user_id' => $user->id
+        ]);
+
+        $shippingMethod = ShippingMethod::factory()->create();
+
+        $shippingMethod->countries()->attach($address->country_id);
+
+        return [$address, $shippingMethod];
+    }
 }

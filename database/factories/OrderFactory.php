@@ -19,7 +19,8 @@ class OrderFactory extends Factory
     public function definition()
     {
         return [
-            'shipping_method_id' => ShippingMethod::factory()->create()->id
+            'shipping_method_id' => ShippingMethod::factory()->create()->id,
+            'subtotal' => 1000
         ];
     }
 }

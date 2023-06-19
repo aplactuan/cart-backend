@@ -16,7 +16,8 @@ class StoreOrderController extends Controller
 
     public function __invoke(StoreOrderRequest $request)
     {
-        $request->user()->orders()->create($request->validated());
+        //$request->user()->orders()->createOrder($request);
+        $this->createOrder($request);
     }
 
     public function createOrder($request)
