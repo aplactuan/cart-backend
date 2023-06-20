@@ -9,22 +9,17 @@ use Illuminate\Http\Request;
 
 class StoreOrderController extends Controller
 {
-    public function __construct(protected Cart $cart)
-    {
-
-    }
-
-    public function __invoke(StoreOrderRequest $request)
+    public function __invoke(StoreOrderRequest $request, Cart $cart)
     {
         //$request->user()->orders()->createOrder($request);
-        $this->createOrder($request);
+        $this->createOrder($request, $cart);
     }
 
-    public function createOrder($request)
+    public function createOrder($request, $cart)
     {
         $request->user()->orders()->create(
             array_merge($request->validated(), [
-                'subtotal' => $this->cart->subtotal()->amount()
+                'subtotal' => $cart->subtotal()->amount()
             ])
         );
     }
