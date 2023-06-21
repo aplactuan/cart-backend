@@ -44,4 +44,11 @@ class Order extends Model
     {
         return $this->belongsTo(ShippingMethod::class);
     }
+
+    public function products()
+    {
+        return $this->belongsTomany(ProductVariation::class, 'product_variation_order')
+            ->withPivot(['quantity'])
+            ->withTimestamps();
+    }
 }
