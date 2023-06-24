@@ -75,7 +75,7 @@ class OrderTest extends TestCase
             'user_id' => $user->id,
             'address_id' => $address->id
         ]);
-       
+
         $order->products()->attach(
             ProductVariation::factory()->create(),
             [
@@ -84,5 +84,25 @@ class OrderTest extends TestCase
         );
 
         $this->assertInstanceOf(ProductVariation::class, $order->products->first());
+    }
+
+    public function test_it_has_a_quantity()
+    {
+        $user = User::factory()->create();
+        $address = $user->addresses()->create(Address::factory()->raw());
+
+        $order = Order::factory()->create([
+            'user_id' => $user->id,
+            'address_id' => $address->id
+        ]);
+
+        $order->products()->attach(
+            ProductVariation::factory()->create(),
+            [
+                'quantity' => $quantity = 2
+            ]
+        );
+
+        $this->assertEquals($quantity, $order->products->first()->pivot->quantity);
     }
 }

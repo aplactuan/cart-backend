@@ -48,7 +48,6 @@ class Order extends Model
     public function products()
     {
         return $this->belongsTomany(ProductVariation::class, 'product_variation_order')
-            ->withPivot(['quantity'])
-            ->withTimestamps(false);
+            ->withPivot(['quantity']);
     }
 }
