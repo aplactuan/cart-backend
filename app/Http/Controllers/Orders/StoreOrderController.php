@@ -12,12 +12,12 @@ class StoreOrderController extends Controller
     public function __invoke(StoreOrderRequest $request, Cart $cart)
     {
         //$request->user()->orders()->createOrder($request);
-        $this->createOrder($request, $cart);
+        $order = $this->createOrder($request, $cart);
     }
 
-    public function createOrder($request, $cart)
+    public function createOrder($request, Cart $cart)
     {
-        $request->user()->orders()->create(
+        return $request->user()->orders()->create(
             array_merge($request->validated(), [
                 'subtotal' => $cart->subtotal()->amount()
             ])
