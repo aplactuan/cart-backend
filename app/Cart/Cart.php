@@ -29,6 +29,11 @@ class Cart
         $this->user->cart()->syncWithoutDetaching($this->getStorePayload($products));
     }
 
+    public function products()
+    {
+        return $this->user->cart;
+    }
+
     protected function getStorePayload($products): array
     {
         return collect($products)->keyBy('id')

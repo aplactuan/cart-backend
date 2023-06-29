@@ -11,8 +11,15 @@ class StoreOrderController extends Controller
 {
     public function __invoke(StoreOrderRequest $request, Cart $cart)
     {
-        //$request->user()->orders()->createOrder($request);
         $order = $this->createOrder($request, $cart);
+
+        $product = $cart->products()->keyBy('id')->map(function ($product) {
+            return [
+                'quantity' => $product->pivot->quantity
+            ];
+        })->toArray();
+
+        $order->products()->sync($product);
     }
 
     public function createOrder($request, Cart $cart)
