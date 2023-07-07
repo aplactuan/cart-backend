@@ -70,4 +70,9 @@ class ProductVariation extends Model
                 'in_stock'
             ]);
     }
+
+    public function newCollection(array $models = [])
+    {
+        return [];
+    }
 }
