@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Cart\Money;
+use App\Models\Collections\ProductVariationCollection;
 use App\Models\Traits\HasPrice;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -73,6 +74,6 @@ class ProductVariation extends Model
 
     public function newCollection(array $models = [])
     {
-        return [];
+        return new ProductVariationCollection($models);
     }
 }

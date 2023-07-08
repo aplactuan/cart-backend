@@ -13,14 +13,7 @@ class StoreOrderController extends Controller
     {
         $order = $this->createOrder($request, $cart);
 
-        dd($cart->products());
-//        $product = $cart->products()->keyBy('id')->map(function ($product) {
-//            return [
-//                'quantity' => $product->pivot->quantity
-//            ];
-//        })->toArray();
-
-        //$order->products()->sync($product);
+        $order->products()->sync($cart->products()->forSynching());
     }
 
     public function createOrder($request, Cart $cart)

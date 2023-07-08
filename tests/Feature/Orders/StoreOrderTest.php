@@ -108,6 +108,7 @@ class StoreOrderTest extends TestCase
 
     public function test_it_attaches_the_products_to_the_order()
     {
+        $this->withoutExceptionHandling();
         $user = Passport::actingAs(User::factory()->create());
 
         $user->cart()->sync(
