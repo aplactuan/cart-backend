@@ -108,7 +108,6 @@ class StoreOrderTest extends TestCase
 
     public function test_it_attaches_the_products_to_the_order()
     {
-        $this->withoutExceptionHandling();
         $user = Passport::actingAs(User::factory()->create());
 
         $user->cart()->sync(
@@ -126,6 +125,25 @@ class StoreOrderTest extends TestCase
             'product_variation_id' => $product->id
         ]);
     }
+
+    public function test_it_returns_400_when_cart_is_empty()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $user->cart()->sync([
+                ($product = $this->productWithStock())->id => [
+                    'quantity' => 0
+                ]
+        ]);
+
+        list($address, $shipping) = $this->orderDependency($user);
+
+        $this->json('POST', '/api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id,
+        ])->assertStatus(Response::HTTP_BAD_REQUEST);
+    }
+
 
     protected function productWithStock()
     {

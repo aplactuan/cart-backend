@@ -11,6 +11,10 @@ class StoreOrderController extends Controller
 {
     public function __invoke(StoreOrderRequest $request, Cart $cart)
     {
+        if ($cart->isEmpty()) {
+            return response(null, 400);
+        }
+
         $order = $this->createOrder($request, $cart);
 
         $order->products()->sync($cart->products()->forSynching());
