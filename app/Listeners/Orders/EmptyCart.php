@@ -2,6 +2,7 @@
 
 namespace App\Listeners\Orders;
 
+use App\Cart\Cart;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -12,7 +13,7 @@ class EmptyCart
      *
      * @return void
      */
-    public function __construct()
+    public function __construct(public Cart $cart)
     {
         //
     }
@@ -25,6 +26,6 @@ class EmptyCart
      */
     public function handle($event)
     {
-        //
+        $this->cart->empty();
     }
 }

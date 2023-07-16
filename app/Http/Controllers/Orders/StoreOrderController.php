@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Orders;
 
 use App\Cart\Cart;
+use App\Events\Orders\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\StoreOrderRequest;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class StoreOrderController extends Controller
@@ -18,6 +20,8 @@ class StoreOrderController extends Controller
         $order = $this->createOrder($request, $cart);
 
         $order->products()->sync($cart->products()->forSynching());
+
+        OrderCreated::dispatch($order);
     }
 
     public function createOrder($request, Cart $cart)
