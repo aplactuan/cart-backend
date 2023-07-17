@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Orders;
 
+use App\Events\Orders\OrderCreated;
 use App\Models\Address;
 use App\Models\ProductVariation;
 use App\Models\ShippingMethod;
@@ -10,6 +11,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Passport;
 use Tests\TestCase;
 
@@ -125,6 +127,45 @@ class StoreOrderTest extends TestCase
             'product_variation_id' => $product->id
         ]);
     }
+
+    public function test_it_fires_an_order_created_event()
+    {
+        Event::fake();
+
+        $user = Passport::actingAs(User::factory()->create());
+
+        $user->cart()->sync(
+            $this->productWithStock()
+        );
+
+        list($address, $shipping) = $this->orderDependency($user);
+
+        $this->json('POST', '/api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id,
+        ]);
+
+        Event::assertDispatched(OrderCreated::class);
+    }
+
+    public function test_it_empties_the_cart()
+    {
+        $user = Passport::actingAs(User::factory()->create());
+
+        $user->cart()->sync(
+            $this->productWithStock()
+        );
+
+        list($address, $shipping) = $this->orderDependency($user);
+
+        $this->json('POST', '/api/orders', [
+            'address_id' => $address->id,
+            'shipping_method_id' => $shipping->id,
+        ]);
+        dd($user->cart);
+        $this->assertEmpty($user->cart);
+    }
+
 
     public function test_it_returns_400_when_cart_is_empty()
     {
