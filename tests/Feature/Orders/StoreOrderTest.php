@@ -17,6 +17,8 @@ use Tests\TestCase;
 
 class StoreOrderTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function test_it_requires_an_authenticated_user()
     {
         $this->json('POST', '/api/orders')
@@ -162,7 +164,7 @@ class StoreOrderTest extends TestCase
             'address_id' => $address->id,
             'shipping_method_id' => $shipping->id,
         ]);
-        dd($user->cart);
+
         $this->assertEmpty($user->cart);
     }
 
