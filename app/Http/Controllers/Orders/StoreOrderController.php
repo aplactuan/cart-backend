@@ -21,9 +21,7 @@ class StoreOrderController extends Controller
 
         $order->products()->sync($cart->products()->forSynching());
 
-        OrderCreated::dispatch($order);
-
-        $cart->empty();
+        event(new OrderCreated($order));
     }
 
     public function createOrder($request, Cart $cart)
