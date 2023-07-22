@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Orders;
 
+use App\Cart\Cart;
 use App\Events\Orders\OrderCreated;
 use App\Models\Address;
 use App\Models\ProductVariation;
@@ -158,6 +159,8 @@ class StoreOrderTest extends TestCase
             $this->productWithStock()
         );
 
+        $cart = new Cart($user);
+
         list($address, $shipping) = $this->orderDependency($user);
 
         $this->json('POST', '/api/orders', [
@@ -165,7 +168,7 @@ class StoreOrderTest extends TestCase
             'shipping_method_id' => $shipping->id,
         ]);
 
-        $this->assertEmpty($user->cart);
+        $this->assertTrue($cart->isEmpty());;
     }
 
 
