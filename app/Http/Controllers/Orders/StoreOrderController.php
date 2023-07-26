@@ -6,6 +6,7 @@ use App\Cart\Cart;
 use App\Events\Orders\OrderCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\StoreOrderRequest;
+use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
 
@@ -22,6 +23,8 @@ class StoreOrderController extends Controller
         $order->products()->sync($cart->products()->forSynching());
 
         event(new OrderCreated($order));
+
+        return new OrderResource($order);
     }
 
     public function createOrder($request, Cart $cart)
