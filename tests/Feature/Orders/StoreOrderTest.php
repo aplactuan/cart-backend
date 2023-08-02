@@ -97,12 +97,16 @@ class StoreOrderTest extends TestCase
     {
         $user = Passport::actingAs(User::factory()->create());
 
+        $user->cart()->sync(
+            $this->productWithStock()
+        );
+
         list($address, $shipping) = $this->orderDependency($user);
 
         $this->json('POST', '/api/orders', [
             'address_id' => $address->id,
             'shipping_method_id' => $shipping->id,
-        ])->assertStatus(Response::HTTP_OK);
+        ])->assertStatus(Response::HTTP_CREATED);
 
         $this->assertDatabaseHas('orders', [
             'user_id' => $user->id,
