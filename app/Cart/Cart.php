@@ -111,6 +111,6 @@ class Cart
 
     public function isEmpty()
     {
-        return $this->user->cart()->sum('quantity') == 0;
+        return $this->user->cart()->sum('quantity') <= 0;
     }
 }

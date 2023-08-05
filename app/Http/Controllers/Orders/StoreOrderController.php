@@ -14,6 +14,8 @@ class StoreOrderController extends Controller
 {
     public function __invoke(StoreOrderRequest $request, Cart $cart)
     {
+        $cart->sync();
+
         if ($cart->isEmpty()) {
             return response(null, 400);
         }
